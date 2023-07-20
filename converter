@@ -1,0 +1,25 @@
+import pathlib, pydub, os
+
+
+def clear_screen():
+    os.system('cls')
+    
+def convert(files: list):
+    processing_count = 0
+    for i in files:
+        sound = pydub.AudioSegment.from_wav(i).export(i[:-3] + 'mp3', format='mp3')
+        os.remove(i)
+        processing_count += 1
+        clear_screen()
+        print(f'Обработано {processing_count} файлов из {len(files)}')
+        
+fileDir = input('Введите путь к папке с файлами для конвертирования \n')
+fileExt = r'**\*.wav'
+files = [str(_) for _ in pathlib.Path(fileDir).glob(fileExt)]
+
+if len(files) == 0:
+    print('Файлы с расширением .wav не найдены')
+elif len(files) > 0:
+    print(f'Найдено файлов: {len(files)}')
+    convert(files)
+print('Конвертация файлов завершена.')
